@@ -1,4 +1,5 @@
 require('dotenv').config()
+const bodyParser = require('body-parser');
 let express = require('express');
 let app = express();
 
@@ -16,6 +17,10 @@ app.use(function(req, res , next){
     console.log(`${method} ${path} - ${ip}`)
     next()
 })
+// using body parser
+app.use(
+    bodyParser.urlencoded({extended: false})
+)
 
 absolutePath = __dirname + '/views/index.html'
 app.get("/", function(req, res) {
@@ -85,6 +90,7 @@ app.get('/name', (req, res) => {
 })
 
 // Use body-parser to Parse POST Requests
+
 
 // app.route(path).get(handler).post(handler)
 
