@@ -37,4 +37,42 @@ app.get("/json", function(req, res) {
     res.json({"message": message})
 })
 
- module.exports = app;
+// Chain Middleware to Create a Time Server
+
+// solution 1
+
+/* app.get("/now", (req, res, next) => {
+    req.time = new Date().toString()
+    next()
+},
+(req, res) => {
+    res.send({
+        time: req.time
+    })
+}
+) */
+
+// solution 2
+// declare the middleware beforehand to use in multiple routes
+
+const middleware = (req, res, next) => {
+    req.time = new Date().toString();
+    next();
+}
+
+app.get("/now", middleware, (req, res) => {
+    res.send({
+        time: req.time
+    })
+})
+
+// Get Route Parameter Input from the Client
+app.get("/:word/echo", (req, res) => {
+    let {word} = req.params
+
+    res.send({
+        echo: word
+    })
+})
+
+module.exports = app;
