@@ -75,4 +75,17 @@ app.get("/:word/echo", (req, res) => {
     })
 })
 
+// Get Query Parameter Input from the Client
+app.get('/name', (req, res) => {
+    let {first, last} = req.query
+
+    res.send({
+        name: `${first} ${last}`
+    })
+})
+
+// Use body-parser to Parse POST Requests
+
+// app.route(path).get(handler).post(handler)
+
 module.exports = app;
