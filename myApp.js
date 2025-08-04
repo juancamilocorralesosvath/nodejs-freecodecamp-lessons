@@ -10,36 +10,36 @@ app.get("/", function(req, res) {
 }) */
 
 // root middleware
-app.use(function(req, res , next){
+app.use(function (req, res, next) {
     let method = req.method
-    let path = req.path 
+    let path = req.path
     let ip = req.ip
     console.log(`${method} ${path} - ${ip}`)
     next()
 })
 // using body parser
 app.use(
-    bodyParser.urlencoded({extended: false})
+    bodyParser.urlencoded({ extended: false })
 )
 
 absolutePath = __dirname + '/views/index.html'
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
     res.sendFile(absolutePath)
 })
 
 // Normal usage
 // app.use(express.static(__dirname + "/public"));
 
-app.use("/public", express.static(__dirname+"/public"))
+app.use("/public", express.static(__dirname + "/public"))
 
-app.get("/json", function(req, res) {
+app.get("/json", function (req, res) {
     let variable = process.env.MESSAGE_STYLE
     let message = "Hello json"
 
     if (variable === "uppercase") {
         message = message.toUpperCase()
     }
-    res.json({"message": message})
+    res.json({ "message": message })
 })
 
 // Chain Middleware to Create a Time Server
@@ -73,7 +73,7 @@ app.get("/now", middleware, (req, res) => {
 
 // Get Route Parameter Input from the Client
 app.get("/:word/echo", (req, res) => {
-    let {word} = req.params
+    let { word } = req.params
 
     res.send({
         echo: word
@@ -81,17 +81,33 @@ app.get("/:word/echo", (req, res) => {
 })
 
 // Get Query Parameter Input from the Client
-app.get('/name', (req, res) => {
+/* app.get('/name', (req, res) => {
     let {first, last} = req.query
 
     res.send({
         name: `${first} ${last}`
     })
-})
+}) */
 
 // Use body-parser to Parse POST Requests
 
 
 // app.route(path).get(handler).post(handler)
+// Get Data from POST Requests
+app.route('/name')
+    .get((req, res) => {
+        let { first, last } = req.query
+
+        res.send({
+            name: `${first} ${last}`
+        })
+    })
+    .post((req, res) => {
+        let { first, last } = req.body
+
+        res.send({
+            name: `${first} ${last}`
+        }) 
+    })
 
 module.exports = app;
